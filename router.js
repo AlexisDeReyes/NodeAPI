@@ -1,6 +1,6 @@
 var router = exports;
 var colors = require('colors');
-var handlers = require('./handler');
+var handlers = require('./handlers2');
 var Return = require('./returner').Return;
 
 var url = require('url');

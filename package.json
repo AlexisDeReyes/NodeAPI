@@ -3,5 +3,6 @@
 		"nodemon" : "latest",
 		"jfs" : "latest",
 		"colors" : "latest",
+		"mongoose":"latest"
 	}
 }

@@ -32,7 +32,6 @@ Handlers.user = {
 						Logger.Error('failed to save user', err);
 						Return(response, 500, err);
 					}	
-					
 				});
 			}
 			else{
