@@ -20,18 +20,50 @@ function RoutingRequestPath(path, request, body, response){
 
 	var pathObject = ParseEndpoint(path);
 
-	if(handlers[pathObject.endpoint]){
-		if(request.method == 'POST' && handlers[pathObject.endpoint].post)
-			handlers[pathObject.endpoint].post(response, body);
-		else if(request.method == 'PUT' && handlers[pathObject.endpoint].put)
-			handlers[pathObject.endpoint].put(response, pathObject.resource, body);
-		else if(request.method == 'GET' && handlers[pathObject.endpoint].get)
-			handlers[pathObject.endpoint].get(response, pathObject.resource);
+	var filename = request.url || "index.html";
+    var ext = path.extname(filename);
+    console.log('extension : ' + path.extname(filename));
+    var localPath = 'site/';
+    var validExtensions = {
+        ".html": "text/html",
+        ".js": "application/javascript",
+        ".css": "text/css",
+        ".txt": "text/plain",
+        ".jpg": "image/jpeg",
+        ".gif": "image/gif",
+        ".png": "image/png"
+    };
+    var isValidExt = validExtensions[ext];
+
+    if (isValidExt) {
+
+        localPath += filename;
+        path.exists(localPath, function (exists) {
+            if (exists) {
+                console.log("Serving file: " + localPath);
+                getFile(localPath, res, isValidExt);
+            } else {
+                console.log("File not found: " + localPath);
+                res.writeHead(404);
+                res.end();
+            }
+        });
+
+    } else {
+        
+		if(handlers[pathObject.endpoint]){
+			if(request.method == 'POST' && handlers[pathObject.endpoint].post)
+				handlers[pathObject.endpoint].post(response, body);
+			else if(request.method == 'PUT' && handlers[pathObject.endpoint].put)
+				handlers[pathObject.endpoint].put(response, pathObject.resource, body);
+			else if(request.method == 'GET' && handlers[pathObject.endpoint].get)
+				handlers[pathObject.endpoint].get(response, pathObject.resource);
+			else
+				Return(response, 404, 'Handler for ' + request.method + ' to path ' + pathObject.endpoint + ' not found');
+		}
 		else
-			Return(response, 404, 'Handler for ' + request.method + ' to path ' + pathObject.endpoint + ' not found');
+			handlers['default'](response);
 	}
-	else
-		handlers['default'](response);
 }
 
 function NotFaviconRequest(path, response){
@@ -61,3 +93,16 @@ function ParseEndpoint(path)
 	}
 }
 
+function getFile(localPath, res, mimeType) {
+    fs.readFile(localPath, function (err, contents) {
+        if (!err) {
+            res.setHeader("Content-Length", contents.length);
+            res.setHeader("Content-Type", mimeType);
+            res.statusCode = 200;
+            res.end(contents);
+        } else {
+            res.writeHead(500);
+            res.end();
+        }
+    });
+}

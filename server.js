@@ -3,7 +3,7 @@ var route = require('./router').route;
 var logger = require('./logger');
 var Return = require('./returner').Return;
 
-var server = http.createServer(function(request, response, next){
+var server = http.createServer(function(request, response){
 	if(request.method == 'OPTIONS'){
 		var headers = {};
 	    headers["Access-Control-Allow-Origin"] = "*";
@@ -32,7 +32,6 @@ function RetreiveBodyThenRoute(request, response, route){
 
 	request.addListener('error', function(error){
 		console.error('got an error', error);
-		next(err);
 	});
 
 	request.addListener('end', function(chunk){
