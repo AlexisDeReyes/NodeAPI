@@ -85,6 +85,10 @@ Handlers.user = {
 		});
 	},
 	options: function(response){
+		response.setHeader('Access-Control-Allow-Origin', '*');
+		response.setHeader('Access-Control-Allow-Methods', 'POST, PUT, GET, OPTIONS');
+		response.setHeader('Access-Control-Max-Age', 1000);
+		response.setHeader('Access-Control-Allow-Headers', 'origin, x-csrftoken, content-type, accept');
 		Return(response, 200, 'ok');
 	}
 }
@@ -170,6 +174,10 @@ Handlers.group = {
 		});
 	},
 	options: function(response){
+		response.setHeader('Access-Control-Allow-Origin', '*');
+		response.setHeader('Access-Control-Allow-Methods', 'POST, PUT, GET, OPTIONS');
+		response.setHeader('Access-Control-Max-Age', 1000);
+		response.setHeader('Access-Control-Allow-Headers', 'origin, x-csrftoken, content-type, accept');
 		Return(response, 200, 'ok')
 	}
 }
