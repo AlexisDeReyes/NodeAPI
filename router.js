@@ -2,7 +2,8 @@ var router = exports;
 var colors = require('colors');
 var handlers = require('./handlers2');
 var Return = require('./returner').Return;
-var path = require('path');
+var pather = require('path');
+var fs = require("fs");
 
 var url = require('url');
 
@@ -22,8 +23,8 @@ function RoutingRequestPath(path, request, body, response){
 	var pathObject = ParseEndpoint(path);
 
 	var filename = request.url || "index.html";
-    var ext = path.extname(filename);
-    console.log('extension : ' + path.extname(filename));
+    var ext = pather.extname(filename);
+    console.log('extension : ' + pather.extname(filename));
     var localPath = 'site/';
     var validExtensions = {
         ".html": "text/html",
@@ -39,7 +40,7 @@ function RoutingRequestPath(path, request, body, response){
     if (isValidExt) {
 
         localPath += filename;
-        path.exists(localPath, function (exists) {
+        pather.exists(localPath, function (exists) {
             if (exists) {
                 console.log("Serving file: " + localPath);
                 getFile(localPath, res, isValidExt);
