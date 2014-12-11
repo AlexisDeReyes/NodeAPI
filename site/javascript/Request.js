@@ -1,2 +1,2 @@
 ﻿
-var RegistryEndpoint = 'http://localhost/';
+var RegistryEndpoint = '';
