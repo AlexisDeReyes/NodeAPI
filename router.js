@@ -25,7 +25,7 @@ function RoutingRequestPath(path, request, body, response){
 	var filename = request.url || "index.html";
     var ext = pather.extname(filename);
     console.log('extension : ' + pather.extname(filename));
-    var localPath = 'site/';
+    var localPath = 'site';
     var validExtensions = {
         ".html": "text/html",
         ".js": "application/javascript",
@@ -40,14 +40,14 @@ function RoutingRequestPath(path, request, body, response){
     if (isValidExt) {
 
         localPath += filename;
-        pather.exists(localPath, function (exists) {
+        fs.exists(localPath, function (exists) {
             if (exists) {
                 console.log("Serving file: " + localPath);
-                getFile(localPath, res, isValidExt);
+                getFile(localPath, response, isValidExt);
             } else {
                 console.log("File not found: " + localPath);
-                res.writeHead(404);
-                res.end();
+                response.writeHead(404);
+                response.end();
             }
         });
 
