@@ -3,16 +3,15 @@ var route = require('./router').route;
 var logger = require('./logger');
 var Return = require('./returner').Return;
 
-var server = http.createServer(function(request, response){
+var server = http.createServer(function(request, response, next){
 	if(request.method == 'OPTIONS'){
 		var headers = {};
 	    headers["Access-Control-Allow-Origin"] = "*";
 	    headers["Access-Control-Allow-Methods"] = "POST, GET, PUT, DELETE, OPTIONS";
-	    headers["Access-Control-Allow-Credentials"] = false;
+	    headers["Access-Control-Allow-Credentials"] = true;
 	    headers["Access-Control-Max-Age"] = '86400'; // 24 hours
 	    headers["Access-Control-Allow-Headers"] = "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept";
-	    res.writeHead(200, headers);
-	    res.end();
+    	Return(response, 204, null, headers);
 	}
 	else if(request.method == 'POST' || request.method == 'PUT')
 		RetreiveBodyThenRoute(request, response, route);

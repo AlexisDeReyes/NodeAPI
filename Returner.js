@@ -1,8 +1,8 @@
 var Returner = exports;
 
-Returner.Return = function(response, status, message){
-	if(typeof(message) == 'string'){
-		response.writeHead(status);
+Returner.Return = function(response, status, message, headers){
+	if(typeof(message) == 'string' || message == null){
+		response.writeHead(status, headers);
 		response.end(message);	
 	}
 	else{
