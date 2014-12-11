@@ -27,6 +27,8 @@ function RoutingRequestPath(path, request, body, response){
 			handlers[pathObject.endpoint].put(response, pathObject.resource, body);
 		else if(request.method == 'GET' && handlers[pathObject.endpoint].get)
 			handlers[pathObject.endpoint].get(response, pathObject.resource);
+		else if(request.method == 'OPTIONS' && handlers[pathObject.endpoint].options)
+			handlers[pathObject.endpoint].options(response);
 		else
 			Return(response, 404, 'Handler for ' + request.method + ' to path ' + pathObject.endpoint + ' not found');
 	}
@@ -42,10 +44,22 @@ function NotFaviconRequest(path, response){
 function ParseEndpoint(path)
 {
 	var words = path.split('/');
-	return {
-		endpoint: words[0],
-		resource: words[1],
-		subresource: words[2]
-	};
+
+	if(words.length == 1){
+		return {
+			endpoint: words[0]
+		};
+	} else if(words.length == 2){
+		return {
+			endpoint: words[0],
+			resource: words[1]
+		};
+	} else {
+		return {
+			endpoint: words[0],
+			resource: words[1],
+			subEndpoint: words[2]
+		};
+	}
 }
 

@@ -6,7 +6,7 @@ var Return = require('./returner').Return;
 
 Handlers.user = {
 	get: function(response, resource){
-		console.log('Retrieving User Data'.bgYellow);
+		console.log('Retrieving User Data'.yellow);
 		if(resource == '' || resource == undefined){
 			models.User.find(function(err, users){
 				if(users.length > 0){
@@ -83,12 +83,15 @@ Handlers.user = {
  				Return(response, 500, err);
 			}
 		});
+	},
+	options: function(response){
+		Return(response, 200, 'ok');
 	}
 }
 
 Handlers.group = {
 	get: function(response, resource){
-		console.log('Retrieving Group Data'.bgYellow);
+		console.log('Retrieving Group Data'.yellow);
 		if(resource == '' || resource == undefined){
 			models.Group.find(function(err, groups){
 				if(groups.length > 0){
@@ -165,6 +168,9 @@ Handlers.group = {
  				Return(response, 500, err);
 			}
 		});
+	},
+	options: function(response){
+		Return(response, 200, 'ok')
 	}
 }
 
