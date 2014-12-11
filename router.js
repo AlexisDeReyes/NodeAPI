@@ -27,8 +27,6 @@ function RoutingRequestPath(path, request, body, response){
 			handlers[pathObject.endpoint].put(response, pathObject.resource, body);
 		else if(request.method == 'GET' && handlers[pathObject.endpoint].get)
 			handlers[pathObject.endpoint].get(response, pathObject.resource);
-		else if(request.method == 'OPTIONS' && handlers[pathObject.endpoint].options)
-			handlers[pathObject.endpoint].options(response);
 		else
 			Return(response, 404, 'Handler for ' + request.method + ' to path ' + pathObject.endpoint + ' not found');
 	}
