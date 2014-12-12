@@ -6,8 +6,8 @@
 masterApp.config([
     '$routeProvider',
     function ($routeProvider) {
-        $routeProvider.when('/register', {
-            templateUrl: '../views/register.html',
+        $routeProvider.when('/Register', {
+            templateUrl: '../views/Register.html',
             controller: 'BlankController'
         }).otherwise({
             redirectTo: '/'
@@ -18,19 +18,36 @@ masterApp.config([
 masterApp.controller('RegisterController', [
     '$scope', '$http', function($scope, $http) {
 
-        $scope.register = {};
-        $scope.currentuser = {name:''};
+        $scope.Register = {};
+        $scope.currentuser = {};
         $scope.currentuser.loggedin = false;
+        $scope.currentuser.display = "";
 
         $scope.RegisterUser = function() {
-            if ($scope.register.email != undefined && $scope.register.password != undefined && $scope.register.name != undefined) {
-                $scope.Request.Post('user', $scope.register).success(function(data) {
-                    $scope.currentuser = data;
+            if ($scope.Register.email != undefined && $scope.Register.password != undefined && $scope.Register.name != undefined) {
+                $scope.Request.Post('user', $scope.Register).success(function(data) {
+                    $scope.Currentuser.name = data.name;
+                    $scope.Currentuser.display = data.name;
+                    $scope.Currentuser.loggedin = true;
                 }).error(function() {
                     $scope.error.register = true;
                 });
             }
         };
+
+        $scope.Register.IsValid = function (key) {
+            var input = $scope.Register[key];
+            key = key != 'password2' ? key : 'Password';
+
+            var itIs = ValidGrammer[key](input);
+
+            $scope.Register.Valid = $scope.Register.Valid ? itIs : false;
+
+            return itIs;
+        }
+
+
+       
 
         $scope.Request = {
             Get: function (myUrl) {
@@ -74,3 +91,15 @@ masterApp.controller('RegisterController', [
     }
 ]);
 
+
+var ValidGrammer = {
+    Email: function(email) {
+        var regex = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i;
+        return regex.test(email);
+    },
+    Password: function(password) {
+        var regex = /[A-Z0-9]{4,16}/i;
+        return regex.test(password);
+    }
+
+};
